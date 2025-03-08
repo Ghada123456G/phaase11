@@ -1,0 +1,24 @@
+package phase1;
+
+public class Bakery extends Food {
+
+	private int numOfProduct;
+	
+	public Bakery(int NOP , String name, double g , String exp , String pName ) {
+		super(name , g , exp , pName );
+		numOfProduct= NOP;
+	}
+	
+	public String toString() {
+		return super.toString() + ", Number of product: " + numOfProduct;
+	}
+	
+	public int getNumOfProduct() {
+		return numOfProduct;
+	}
+
+	public void setNumOfProduct(int numOfProduct) {
+		this.numOfProduct = numOfProduct;
+	}
+	
+}
