@@ -1,0 +1,1563 @@
+package phase1;
+import java.util.Scanner;
+public class MarketTest {
+	
+	public static void main(String[] args) { 
+
+	Scanner read= new Scanner(System.in); 
+
+	 
+
+	int choice , managerChoice ,customerChoice , pChoice ; 
+
+	MiniMarket market= new MiniMarket("Grocery Stor" , 500); 
+
+	 
+
+	Food food; 
+
+	Beverage bev; 
+
+	Order order[] , order1; 
+
+	Coffee coffee; 
+
+	String bevName , expDate , pName , bakeName, currentDate ; 
+
+	int numOfProduct , day , month , year, countFood=0 ,countBeverage=0, count; 
+
+	double ml , price , gram; 
+
+	Product[] basket;
+	 
+
+	///// 
+
+	boolean returnMenuList,returnFoodList; 
+
+	int productNum, BAmount, FAmount ; 
+
+	String mobile , name , location , Status , cChoice  , cName, ID, bChoice , fChoice; 
+
+	 
+
+	 
+
+	 
+
+	System.out.println("------- Welcome To Our Market -------\n\n"); 
+
+	do { 
+
+	   	System.out.println("\n------- Main Menu -------\n"); 
+
+	System.out.println("1- Manager menu.\n2- Customer menu.\n3- Exit"); 
+
+	System.out.println("Select A Menu: "); 
+
+	choice= read.nextInt(); 
+
+	switch(choice) { 
+
+case 1: //manager menu
+
+	 
+
+	System.out.println("\n------- Manager Menu -------\n"); 
+
+	do 
+
+	{ 
+
+	System.out.println("1- View Stock.\n2- Add Product.\n3- Display All Orders\n4- Display Specific Order.\n5- Return To Main menu."); 
+
+	System.out.println("Select Your Choice: "); 
+
+	managerChoice= read.nextInt(); 
+
+	 
+
+			switch(managerChoice) { 
+
+						case 1: // View stock
+					    String str = "";
+					    Product[] p = market.pList;
+					    
+					    if (market.getAllStock() == null || market.getProducts() == 0) {
+					        System.out.println("The storage is empty, you need to restock.");
+					    } else {
+					        int c = 0; // Counter for products
+					        boolean Displayed; //check if product was already displayed
+				
+					        for (int i = 0; i < market.getProducts(); i++) {
+					            Displayed = false; // Mark as hasn't been displayed yet
+					            
+					            for (int j = 0; j < i; j++) {
+					                if (p[i].equals(p[j])) { 
+					                    Displayed = true;  // Mark as already displayed
+					                    break;  // No need to check further
+					                }
+					            }
+					            
+					            // If the product hasn't been displayed yet, add it to the display string
+					            if (!Displayed) {
+					                str += p[i].toString() + "\n";  // Append product info to the string
+					                c++; // Increase counter for displayed products
+					            }
+					        }
+				
+					        // If there are products that has a num of product= 1, display them
+					        if (c > 0) {
+					            System.out.println("Stock Products: \n" + str);
+					        } else {
+					            System.out.println("No products in stock.");
+					        }
+					    }
+					    break;	 
+
+						case 2: // Add product 
+					
+						System.out.println("Enter Product Type (Bakery / Coffee):"); 
+					
+						pName= read.next(); // product name 
+					
+						 
+					
+						if(pName.equalsIgnoreCase("Bakery")) 
+					
+						{ 
+					
+						System.out.println("Enter bakery product name: "); 
+					
+						bakeName= read.next(); 
+					
+						System.out.println("Enter Food's expier date dd-mm-yyyy:"); 
+					
+						System.out.println("Year: "); 
+					
+						year= read.nextInt(); 
+					
+						while (year < 2025)  
+					
+						{ 
+					
+						System.out.println("Invalid year!\nenter another year:"); 
+					
+						year = read.nextInt(); 
+					
+						} 
+					
+						 do{ 
+					
+						        	System.out.println("Enter a month: "); 
+					
+						        month = read.nextInt(); 
+					
+						         
+					
+						        if (month < 1 || month > 12) 
+					
+						        { 
+					
+						        	System.out.println("Invalid month! "); 
+					
+						        } 
+					
+						         
+					
+						        else if (year == 2025 && month < 3)  
+					
+						         
+					
+						        { 
+					
+						        	System.out.println("Invalid month! In 2025 you cannot chose this month "); 
+					
+						        }  
+					
+						    } while ((month < 1 || month > 12) || (year == 2025 && month < 3)); 
+					
+						 
+					
+							 System.out.println("enter a Day: "); 
+							 day= read.nextInt(); 
+					
+						 
+		
+			 				while (day > 31 || day < 1) 
+				
+							{ 
+				
+			        		System.out.println("invaled day! \nTry again");   			
+		
+			        					day= read.nextInt(); 
+		
+			        				} 
+					
+						 
+					
+	        				if (day <= 31) 
+
+	        				{ 
+
+	        					while ((month == 3) && (year == 2025) && (day < 8))	 
+
+	        					{ 
+
+	        						System.out.println("sorry you cannot add product that is expierd \nenter another day: \n"); 
+
+	        						day= read.nextInt(); 
+
+	        					} 
+
+	 
+
+	        					while ((month == 2 && day > 29) && ((year % 4 == 0 && year % 100 != 0) || (year % 100 == 0 && year % 400 == 0) ) ) 
+
+	        					{						 
+
+	        						System.out.println("invalid day!\nenter again:"); 
+
+	        						day= read.nextInt(); 
+
+	        					} 
+
+	 
+
+	        					if (year >= 2025) 
+
+	        					{ 
+
+	        						//validate  day 
+
+	        						int validDay = 0;  
+
+	 
+
+	        						while (validDay == 0) 
+
+	        						{ 
+
+	        							if (day < 1 || day > 31)  
+
+	        							{ 
+
+	        								System.out.println("Invalid day! \nPlease enter another day:"); 
+
+	        								day = read.nextInt(); 
+
+	        								 
+
+	        								continue; 
+
+	        							} 
+
+	 
+
+	        							// Check specific condition for March 2025 
+
+	        							if (year == 2025 && month == 3 && day <= 8) 
+
+	        							{ 
+
+	        								System.out.println("Invalid day! In March 2024 \nPlease enter a day greater than 2:"); 
+
+	        								day = read.nextInt(); 
+
+	 
+
+	        								continue;  
+
+	        							} 
+
+	 
+
+	        							//  February 
+
+	        							if (month == 2)  
+
+	        							{ 
+
+	        								// Leap year check 
+
+	        								if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) 
+
+	        								{ 
+
+	        									// February up to 29 days 
+
+	        									if (day > 29)  
+
+	        									{ 
+
+	        										System.out.println("Invalid day! February can have at most 29 days in a leap year. \nPlease enter another day:"); 
+
+	        										day = read.nextInt(); 
+
+	            
+
+	        										continue;  
+
+	        									} 
+
+	        								} 
+
+	        	 
+
+	        								else  
+
+	        								{ 
+
+	        									// Non-leap year 
+
+	        									if (day > 28)  
+
+	        									{ 
+
+	        										System.out.println("Invalid day! February can have at most 28 days in a non-leap year. \nPlease enter another day:"); 
+
+	        										day = read.nextInt(); 
+
+	 
+
+	        										continue; 
+
+	        									} 
+
+	        								} 
+
+	        							} 
+
+	         
+
+	        							// Check for months with 30 days 
+
+	        							if ((month == 4 || month == 6 || month == 9 || month == 11) && day > 30)  
+
+	        							{ 
+
+	        								System.out.println("Invalid day! The selected month can have at most 30 days. \nPlease enter another day:"); 
+
+	        								day = read.nextInt(); 
+
+	  
+
+	        								continue;  
+
+	        							}       
+
+	 
+
+	        							validDay = 1; // Update variable to exit the loop , valid day 
+
+	        						} 
+
+	        					} 
+
+	        				} //i added this 
+
+						 
+					
+						        					// make sure that the date is booked or not 
+					
+							if (day < 10) 
+						
+							expDate= "0" +day + "-" + month + "-" + year; 
+						
+							else 
+						
+							expDate= day + "-" + month + "-" + year; 
+						
+							System.out.println("Expier date: " + expDate);
+							
+							 
+						
+							System.out.println("Enter each product's weight in gram: "); 
+							gram= read.nextDouble(); 
+						
+						
+							System.out.println("Enter number of product: "); 
+							numOfProduct= read.nextInt(); 
+						
+							//////////////////////////////////////////////////////////////////////
+			               boolean canAdded; 
+		
+			               do { ///////////////////////// 
+		
+			               canAdded = false; 
+		
+			               if(numOfProduct + market.getProducts() < market.pList.length) { 
+		
+				                 food= new Bakery(numOfProduct , bakeName , gram , expDate , pName );           
+				                 food.setPrice(food.calculatePrice()) ;
+				                 System.out.println("Price: " + food.getPrice());
+				                 for(int i= 0 ; i < numOfProduct ; i++)  
+			 
+				                 market.addProduct(food); 
+			
+				                System.out.println("Product added successfully"); 
+			
+				                canAdded = true; 
+		
+			               } 
+		
+			              else 
+		
+			            	  	System.out.println("The number of product is too much, try less "); 
+			               
+			              break;
+			               
+		
+			              }while(canAdded == false);   
+					
+						        				 
+					
+						               
+					
+						 
+					
+						//food= new Bakery(numOfProduct , bakeName , gram , expDate , pName , price); 36 
+					
+						//market.addProduct(food); 
+					
+						//System.out.println("Product added successfully"); I made it as comment gharsah 
+					
+						} 
+					
+						else if(pName.equalsIgnoreCase("Coffee")) { 
+					
+						System.out.println("Enter coffee name: "); 
+					
+						bakeName= read.next(); 
+					
+						System.out.println("Enter drink's expier date dd-mm-yyyy: "); 
+					
+					
+						System.out.println("Year: "); 
+					
+						year= read.nextInt(); 
+					
+						while (year < 2024)  
+					
+						{ 
+					
+						System.out.println("Invalid year!\nenter another year:"); 
+					
+						year = read.nextInt(); 
+					
+						} 
+					
+						 do 
+					
+						    { 
+					
+				        	System.out.println("Enter a month: "); 
+					
+						     month = read.nextInt(); 
+						        
+					
+						         
+					
+					        if (month < 1 || month > 12) 
+				
+					        	System.out.println("Invalid month! ");  
+					
+						         
+					
+						    else if (year == 2025 && month < 3) 							        							         
+					
+						        	System.out.println("Invalid month! In 2025 you cannot chose this month "); 
+					
+						          
+					
+						 }while ((month < 1 || month > 12) || (year == 2025 && month < 3)); 
+					
+						 
+					
+						 System.out.println("enter a Day: "); 
+					
+						        				day= read.nextInt(); 
+					
+						 
+					
+						        				while (day > 31 || day < 1) 
+					
+						        				{ 
+					
+						        					System.out.println("invaled day! \nTry again"); 
+					
+						        					day= read.nextInt(); 
+					
+						        				} 
+					
+						 
+					
+						        				if (day <= 31) 
+					
+						        				{ 
+					
+						        					while ((month == 3) && (year == 2025) && (day < 8))	 
+					
+						        					{ 
+					
+						        						System.out.println("sorry you cannot add product that is expierd \nenter another day: \n"); 
+					
+						        						day= read.nextInt(); 
+					
+						        					} 
+					
+						        					 
+					
+						        					while ((month == 2 && day > 29) && ((year % 4 == 0 && year % 100 != 0) || (year % 100 == 0 && year % 400 == 0) ) ) 
+					
+						        					{						 
+					
+						        						System.out.println("invalid day!\nenter again:"); 
+					
+						        						day= read.nextInt(); 
+					
+						        					} 
+					
+						 
+					
+						        					if (year >= 2025) 
+					
+						        					{ 
+					
+						        						//validate  day 
+					
+						        						int validDay = 0;  
+					
+						 
+					
+						        						while (validDay == 0) 
+					
+						        						{ 
+					
+						        							if (day < 1 || day > 31)  
+					
+						        							{ 
+					
+						        								System.out.println("Invalid day! \nPlease enter another day:"); 
+					
+						        								day = read.nextInt(); 
+					
+						        								 
+					
+						        								continue; 
+					
+						        							} 
+					
+						 
+					
+						        							// Check specific condition for March 2025 
+					
+						        							if (year == 2025 && month == 3 && day <= 8) 
+					
+						        							{ 
+					
+						        								System.out.println("Invalid day! In March 2024 \\nPlease enter a day greater than 2: "); 
+					
+						        								day = read.nextInt(); 
+					
+						 
+					
+						        								continue;  
+					
+						        							} 
+					
+						 
+					
+						        							//  February 
+					
+						        							if (month == 2)  
+					
+						        							{ 
+					
+						        								// Leap year check 
+					
+						        								if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) 
+					
+						        								{ 
+					
+						        									// February up to 29 days 
+					
+						        									if (day > 29)  
+					
+						        									{ 
+					
+						        										System.out.println("Invalid day! February can have at most 29 days in a leap year. \nPlease enter another day:"); 
+					
+						        										day = read.nextInt(); 
+					
+						            
+					
+						        										continue;  
+					
+						        									} 
+					
+						        								} 
+					
+						        	 
+					
+						        								else  
+					
+						        								{ 
+					
+						        									// Non-leap year 
+					
+						        									if (day > 28)  
+					
+						        									{ 
+					
+						        										System.out.println("Invalid day! February can have at most 28 days in a non-leap year. \nPlease enter another day:"); 
+					
+						        										day = read.nextInt(); 
+					
+						 
+					
+						        										continue; 
+					
+						        									} 
+					
+						        								} 
+					
+						        							} 
+					
+						         
+					
+						        							// Check for months with 30 days 
+					
+						        							if ((month == 4 || month == 6 || month == 9 || month == 11) && day > 30)  
+					
+						        							{ 
+					
+						        								System.out.println("Invalid day! The selected month can have at most 30 days. \nPlease enter another day:"); 
+					
+						        								day = read.nextInt(); 
+					
+						  
+					
+						        								continue;  
+					
+						        							}       
+					
+						 
+					
+						        							validDay = 1; // Update variable to exit the loop , valid day 
+					
+						        						} 
+					
+						        					} 
+					
+						        				}//i added this 
+					
+						 
+					
+						        					// make sure that the date is booked or not 
+					
+						if (day < 10) 
+					
+						expDate= "0" +day + "-" + month + "-" + year; 
+					
+						else 
+					
+						expDate= day + "-" + month + "-" + year; 
+					
+						System.out.println("Expier date: " + expDate);
+						        				 
+					
+						System.out.println("Enter each drink's weight in ml: "); 
+					
+						ml= read.nextDouble(); 
+					
+						System.out.println("Enter number of drinks: "); 
+					
+						numOfProduct= read.nextInt(); 
+					
+						 ////////////////////////////////////////////////
+					
+						boolean canAdded; 
+					
+			              do { ///////////////////////// 
+		
+			              canAdded = false; 
+		
+			              if(numOfProduct + market.getProducts()< market.pList.length) { 
+		
+			                bev= new Coffee(numOfProduct , bakeName , ml , expDate , pName );   
+			                bev.setPrice(bev.calculatePrice());
+			                System.out.println("Price: " + bev.getPrice());
+		
+			              for(int i= 0 ; i < numOfProduct ; i++)  
+		
+			              market.addProduct(bev); 
+		
+			              System.out.println("Product added successfully"); 
+		
+			              canAdded = true; 
+		
+			              } 
+		
+			              else 
+		
+			              System.out.println("The number of product is too much, try less "); 
+		
+			               
+		
+			              }while(canAdded == false);   
+					
+						               
+					
+						 
+					
+						/*bev= new Coffee(numOfProduct , bakeName , ml , expDate , pName , price); 
+					
+						market.addProduct(bev); 
+					
+						System.out.println("Product added successfully");*/ 
+					
+						} 
+					
+						 
+					
+						else 
+					
+						System.out.println("\nInvalid input!\n"); 
+					
+						        				 
+					
+						break; 
+					
+						 
+					
+						 
+					
+						 
+					
+						 
+					
+						 
+	
+						case 3: //  Display All Orders 
+					
+								order= market.oList; 
+							
+								if(market.getOrders() == 0) 
+							
+								System.out.println("There is no orders yet!"); 
+							
+								else 
+							
+								System.out.println(order); 
+							
+								break; 
+
+	 
+
+						case 4: //Display Specific Order 
+					
+						 
+					
+						System.out.println("Enter order ID: "); 
+					
+						String mID= read.next(); 
+					
+						System.out.println("Enter mobile number used in the order: "); 
+					
+						read.next(); 
+					
+						String mMobile= read.nextLine(); 
+					
+						//order1= market.searchOrder(mMobile, mID); 
+					
+						 
+					
+						//order= market.oList; 
+					
+						int c= 0; 
+					
+					//	for(int i= 0 ; i < market.getOrders() ; i++) { 
+					
+						if(market.searchOrder(mMobile, mID)!= null) { 
+					
+						System.out.println(market.searchOrder(mMobile, mID)); 
+					
+						c++; 
+					
+						//}	 
+					
+						} 
+					
+						if(c == 0) 
+					
+						System.out.println("There is no order with this ID or mobile"); 
+					
+						 
+					
+						break; 
+					
+						 
+					
+						case 5: // return to main menu 
+					
+						break; 
+					
+						 
+					
+						default: 
+					
+						System.out.println("Invalid input!");	 
+					
+			 }// end of manager menu switch 
+
+	  
+     }while(managerChoice != 5); // manager menu 
+
+break; /////end of manager case 
+	
+
+case 2: // customer  
+
+	 do{ 
+
+	        returnMenuList= false; 
+
+	        System.out.println("\n------- Customer Menu -------"); 
+
+	        System.out.println("\nChoose the appropriate choice from this list:\n1- Add Order\n2- Cancel Order\n3- View Order Information\n4- Back to main menu\n"); 
+
+	        customerChoice= read.nextInt(); 
+
+	         switch(customerChoice) {
+	        
+				        case 1: // add order
+				        
+				        	 System.out.println("\n------- Customer Menu -------"); 
+			
+				 	        System.out.println("\nChoose the appropriate choice from this list:\n1- Viev products menue\n2- return to customer menu\n"); 
+			
+				 	        pChoice= read.nextInt(); 
+	 	        
+				 	        switch(pChoice) {
+				 	        
+						 	        case 1: // view product
+						 	        	do {
+						 	        		returnFoodList= false;
+					
+
+	                                      //////////////////////                	
+	                	
+	 	        		
+						 	        		basket= new Product[market.pList.length];
+						 	        		int index= 0;
+						 	        		
+				                	///////////////////////
+						 	        		
+						 	                System.out.println("\nWhat kind of product do you want to order?"); 
+					
+								            System.out.println("1- Food"); 
+					
+								            System.out.println("2- Beverage"); 
+					
+								            System.out.println("3- Confirming \n4- Back to main menu"); 
+
+								            productNum = read.nextInt();  
+
+
+			                                switch(productNum) { 
+
+										                case 1: // food
+										                    count= 0; 
+							
+										                	if(market.getProducts() == 0) 
+							
+										                		{ 
+							
+										                		System.out.println("Sorry the products are out of the stock"); 
+							
+										                		break; 
+							
+										                		} 
+							
+										                	else 
+										                	{ 
+							
+										                		boolean displayed;	                	
+										                		for(int i= 0 ; i < market.getProducts() ; i++)  {
+								
+										                			if(market.pList[i] instanceof Food) { 
+										                		
+										                				displayed= false;
+										                			
+										                				for(int j= 0 ; j < i ; j++) {			                			
+										                					if(market.pList[i].equals(market.pList[j])) {		                				
+										                						displayed= true;
+										                				}
+										                			}
+										                			
+										                			if(!displayed)
+										  	                		  System.out.println("- " + market.pList[i].getName() + ", Price: " + market.pList[i].price); 
+										  	                		}
+										                			count++;
+										                		}
+										                			} 
+										                	 
+										                	
+										                	if(count == 0){ 
+										                		  System.out.println("Soory food is not available!"); 
+							
+										                		  break; 
+							
+										                	  } 
+										                	
+										                	    System.out.println("Select a food "); 
+										                		  cChoice= read.next();
+										                		  
+										                		  int counter1=0;
+										                		  
+												                	for(int i= 0 ; i < market.getProducts() ; i++) 
+												                	if(market.pList[i] instanceof Food && market.pList[i].inStock()== true) {
+												                	counter1++;}
+												                	
+												                 boolean validAmount1=false;
+												                	do {
+										                		  System.out.println("Enter Amount:");
+										                		  FAmount= read.nextInt();
+										                	      if (FAmount <= counter1)
+										                	      validAmount1= true;
+										                	      else
+										                	      System.out.println("we have just "+ counter1 +" of this product");  
+												                	}while(validAmount1==false);
+										                		  
+										                     
+										                	  for(int i= 0 ; i < market.getProducts() && i<FAmount ; i++) {  // هنا حطيت شرط انه ما يحجز اكثر من العدد الي حطه الكوستومير لانه كان يحجز برودكت واحد
+										                	   
+										                    if((cChoice.toUpperCase().charAt(0) == market.pList[i].getName().charAt(0) || cChoice.toLowerCase().charAt(0) == market.pList[i].getName().charAt(0)) && market.pList[i].inStock()== true)    
+										                    { 
+										                    	basket[index++]= market.pList[i];
+										                    	System.out.println("Added to the basket successfuly(:");
+										                    	
+							
+										                   
+										                    /* int index2= i; 
+							
+										                    for (int j= index2 ; j < market.getProducts()-1 ; j++) 
+							
+										                              market.pList[index2]= market.pList[index2+1]; 
+							
+										                            market.pList[market.getProducts()-1]= null; 
+							
+										                            market.setProducts(market.getProducts()-1);   */
+							
+										                             
+							
+										                           // System.out.println("Your order is successfuly placed,Your order ID: " + order1.getOrderID() + "\nthank you (:"); 
+							
+										                            //returnFoodList= true; 
+										                            
+										                            //break; 
+							
+										                          } 
+										                             /*if(!returnFoodList) 
+							
+										                             System.out.println("Invalid input");    
+							
+										                             break; */
+										                	  }
+			                                                  countFood+=FAmount;
+										                	  break; // exit from case food
+										                	  
+			                	  
+			                	  
+										                case 2: // beverage
+										                	count= 0; 
+							
+										                	if(market.getProducts() == 0) 
+							
+										                		{ 
+							
+										                		System.out.println("Sorry the products are out of the stock"); 
+							
+										                		break; 
+							
+										                		} 
+										                	else 
+							
+										                	{ 
+							
+										                	boolean displayed;
+										                	  for(int i= 0 ; i < market.getProducts() ; i++) { 
+							
+										                		if(market.pList[i] instanceof Beverage) { 
+										                			displayed= false;
+										                			for(int j= 0 ; j < i ; j++) {
+										                				if(market.pList[i].equals(market.pList[j])) {
+										                					displayed= true;
+										                				}
+										                			}
+										                			
+										                			if(!displayed)
+										  	                		  System.out.println("- " + market.pList[i].getName() + ", Price: " + market.pList[i].price); 
+										  	                		}
+										                			count++;
+										                			} 
+										                	}
+										                	  if(count == 0)  
+							
+										                	  { 
+							
+										                		  System.out.println("Soory beverage is not available!"); 
+							
+										                		  break; 
+							
+										                	  } 
+										                	  
+										                		  System.out.println("Select a beverage "); 
+										                		  cChoice= read.next();
+										                		  
+										                		  int counter2=0;
+										                		  
+												                	for(int i= 0 ; i < market.getProducts() ; i++) 
+												                	if(market.pList[i] instanceof Beverage && market.pList[i].inStock()== true) {
+												                	counter2++;}
+												                	
+												                 boolean validAmount2=false;
+												                	do {
+										                		  System.out.println("Enter Amount:");
+										                		  BAmount= read.nextInt();
+										                	      if (BAmount <= counter2)
+										                	      validAmount2= true;
+										                	      else
+										                	      System.out.println("we have just "+ counter2 +" of this product");  
+												                	}while(validAmount2==false);
+										                	  
+										                     
+										                	  for(int i= 0 ; i < market.getProducts() & i<BAmount ;i++) { // هنا حطيت شرط انه ما يحجز اكثر من العدد الي حطه الكوستومير لانه كان يحجز كل البرودكتس الموجودة
+							
+										                		
+										                    if((cChoice.toUpperCase().charAt(0) == market.pList[i].getName().charAt(0) || cChoice.toLowerCase().charAt(0) == market.pList[i].getName().charAt(0)) && market.pList[i].inStock()== true) 
+										                    { 
+										                    	basket[index++]= market.pList[i];
+										                    	System.out.println("Added to basket successfuly(:");
+										                    	
+							
+										                    	
+							
+										                    /*int index3= i; 
+							
+										                    for (int j= index3 ; j < market.getProducts()-1 ; j++) 
+							
+										                              market.pList[index3]= market.pList[index3+1]; 
+							
+										                            market.pList[market.getProducts()-1]= null; 
+							
+										                            market.setProducts(market.getProducts()-1);   */
+							
+										                             
+							
+										                           // System.out.println("Your order is successfully placed,Your order ID: " + order1.getOrderID() + "\nthank you (:"); 
+							
+										                            //returnFoodList= true; 
+							
+										                            //break; 
+										                          } 
+										                    
+										                          /*if(!returnFoodList) 
+							
+										                             System.out.println("Invalid input");   
+							
+										                             break;  */
+										                	  }
+										                	  countBeverage+= BAmount;
+										                	  break; // exit from case beverage
+			                	  
+										                case 3: // confirm order
+										                	System.out.println("Enter your Info: \n\n"); 
+										                	System.out.println("Name: ");   	 
+							
+									                    	cName= read.next(); 
+							
+									                    	System.out.println("Mobile: "); 
+									                    	mobile= read.next(); 
+									                    	
+									                    	while(mobile.charAt(0) != '0' || mobile.length() != 10) {
+									                    		if(mobile.charAt(0) != '0'  && mobile.length() == 10) {
+									                    		System.out.println("let your mobile start with 0, enter anothe mobile: ");
+										                    	mobile= read.next();
+										                    	}
+									                    		else if(mobile.charAt(0) == '0'  && mobile.length() != 10) {
+									                    			System.out.println("invalid mobile (shoud be 10 numbers), enter another mobile: ");
+											                    	mobile= read.next();
+									                    		}
+									                    		else if(mobile.charAt(0) != '0' && mobile.length() != 10) {
+									                    			System.out.println("invalid mobile (shoud be 10 numbers and starts with 0), enter anothe mobile: ");
+											                    	mobile= read.next();
+									                    		}
+									                    	}
+							
+									                    	System.out.println("Location: ");			  
+							
+									                    	location= read.next();	
+									                    	
+									                    	int size = countFood+countBeverage;
+									                    	order1= new Order(cName , mobile , location, size ); 
+							
+									                    	if(market.addOrder(order1)) {
+							
+									                    	//for(int j= market.getOrders() ; j < market.oList.length ; j++) { 
+							
+									                    		//ID= "233" + j + (j + 1); }
+									                    		
+									                    		//ID= "233" + market.getOrders();
+									                    		//order1.setOrderID(ID);
+									                    		
+									                    		System.out.println("Your order is successfully placed,Your order ID: " + market.oList[market.getOrders()-1].getOrderID() + "\nthank you (:"); 
+									                    	   
+									                    		for(int i = 0 ; i < index ;i++)
+									                    			basket[i].setStock(false);
+									                    		
+										                	returnFoodList= true;
+									                    	}
+									                    	else {
+									                    	System.out.println("Your order failed to be placed");	
+									                    	returnFoodList= true;}
+										                
+											        	 break;// exit from case confirm 
+				        	 
+										                case 4: // back to main menu
+										                 returnFoodList= true;   
+											        	 break;// exit from case return main menu  
+										                	
+											        	 default:
+											        	 System.out.println("Invalid input!");
+
+			                                			
+			                                }// end product type switch
+			                                
+						 	        	}while(returnFoodList == false );
+						 	        	
+						 	        break;
+						 	        
+						 	        case 2:
+						 	        	returnMenuList = true;
+						 	        	break;
+						 	        	
+						 	       default:
+							       System.out.println("Invalid input!");
+							       
+						 	        }//end view product/ return customer list switch
+				 	        
+						 	       break;/// end of case add order
+	        
+							      
+	        	
+				        case 2: // cancel order
+				        	  System.out.println("Enter Your Info: \n"); 
+			
+				              System.out.println("Name"); 
+			
+				              name= read.next(); 
+			
+				              System.out.println("Mobile"); 
+			
+				              mobile =read.next(); 
+			
+			              	while(mobile.charAt(0) != '0' || mobile.length() != 10) {
+			              		if(mobile.charAt(0) != '0'  && mobile.length() == 10) {
+			              		System.out.println("let your mobile start with 0, enter anothe mobile: ");
+			                  	mobile= read.next();
+			                  	}
+			              		else if(mobile.charAt(0) == '0'  && mobile.length() != 10) {
+			              			System.out.println("invalid mobile (shoud be 10 numbers), enter another mobile: ");
+				                    	mobile= read.next();
+			              		}
+			              		else if(mobile.charAt(0) != '0' && mobile.length() != 10) {
+			              			System.out.println("invalid mobile (shoud be 10 numbers and starts with 0), enter anothe mobile: ");
+				                    	mobile= read.next();
+			              		}
+			              	}
+			
+			
+				              System.out.println("Location"); 
+			
+				              location=read.next(); 
+			
+				              System.out.println("Enter your order's ID that you want to cancel"); 
+			
+				              ID =read.next(); 
+			
+				               
+			
+				              if(market.searchOrder( mobile , ID ) != null) { 
+			
+				              Order CwantCancel= market.searchOrder( mobile , ID); 
+			
+				                   
+			
+				                  if(market.cancelOrder(CwantCancel.getMobile(), CwantCancel.getOrderID()) == true) 
+			
+				                     System.out.println("Your cancelation was succsesful\n"); 
+			
+				                       
+			
+				                  else                                     
+			
+				                    System.out.println("Your cancelation was failed\n"); 
+			
+				              } 
+			
+				              else  
+			
+				                  System.out.println("Your entered order is not exists, try again"); 
+			
+				                                 
+			
+				              break;    //customer menu's switch
+				  
+				         case 3:  // view order info
+			
+				                
+				
+				                //if(Status.getProduct() != null) { 
+				
+				
+				          	System.out.println("Enter Your Info: \n"); 
+				
+				            System.out.println("Name"); 
+				
+				            name= read.next(); 
+				
+				            System.out.println("Mobile"); 
+				
+				            mobile =read.next(); 
+				
+				            while(mobile.charAt(0) != '0') { 
+				
+				          	  System.out.println("let your mobile start with 0: ");                  	 
+				
+				          	  mobile= read.next();	                    	 
+				
+				            }		               
+				
+				            System.out.println("Location"); 
+				
+				            location=read.next(); 
+				
+				            System.out.println("Enter your order's ID that you want to show its information"); 
+				
+				            ID =read.next(); 
+				
+				
+				            Order o= market.searchOrder( mobile , ID ); 
+				
+				                if( o != null) { 
+				
+				              	 // Order customer = new Order (name, mobile ,location); 
+				
+				
+				              	 // Status = o.orderStatus(); 
+				                	
+				                	///////////////////////////////////
+				                	System.out.println("Enter today's date dd-mm-yyyy: "); 
+									
+									
+									System.out.println("Year: "); 
+								
+									year= read.nextInt(); 
+								
+									while (year < 2024)  
+								
+									{ 
+								
+									System.out.println("Invalid year!\nenter another year:"); 
+								
+									year = read.nextInt(); 
+								
+									} 
+								
+									 do 
+								
+									    { 
+								
+							        	System.out.println("Enter a month: "); 
+								
+									     month = read.nextInt(); 
+									        
+								
+									         
+								
+								        if (month < 1 || month > 12) 
+							
+								        	System.out.println("Invalid month! ");  
+								
+									         
+								
+									    else if (year == 2025 && month < 3) 							        							         
+								
+									        	System.out.println("Invalid month! In 2025 you cannot chose this month "); 
+								
+									          
+								
+									 }while ((month < 1 || month > 12) || (year == 2025 && month < 3)); 
+								
+									 
+								
+									 System.out.println("enter a Day: "); 
+								
+									        				day= read.nextInt(); 
+								
+									 
+								
+									        				while (day > 31 || day < 1) 
+								
+									        				{ 
+								
+									        					System.out.println("invaled day! \nTry again"); 
+								
+									        					day= read.nextInt(); 
+								
+									        				} 
+								
+									 
+								
+									        				if (day <= 31) 
+								
+									        				{ 
+								
+									        					while ((month == 3) && (year == 2025) && (day < 8))	 
+								
+									        					{ 
+								
+									        						System.out.println("sorry you cannot add product that is expierd \nenter another day: \n"); 
+								
+									        						day= read.nextInt(); 
+								
+									        					} 
+								
+									        					 
+								
+									        					while ((month == 2 && day > 29) && ((year % 4 == 0 && year % 100 != 0) || (year % 100 == 0 && year % 400 == 0) ) ) 
+								
+									        					{						 
+								
+									        						System.out.println("invalid day!\nenter again:"); 
+								
+									        						day= read.nextInt(); 
+								
+									        					} 
+								
+									 
+								
+									        					if (year >= 2025) 
+								
+									        					{ 
+								
+									        						//validate  day 
+								
+									        						int validDay = 0;  
+								
+									 
+								
+									        						while (validDay == 0) 
+								
+									        						{ 
+								
+									        							if (day < 1 || day > 31)  
+								
+									        							{ 
+								
+									        								System.out.println("Invalid day! \nPlease enter another day:"); 
+								
+									        								day = read.nextInt(); 
+								
+									        								 
+								
+									        								continue; 
+								
+									        							} 
+								
+									 
+								
+									        							// Check specific condition for March 2025 
+								
+									        							if (year == 2025 && month == 3 && day <= 8) 
+								
+									        							{ 
+								
+									        								System.out.println("Invalid day! In March 2024 \\nPlease enter a day greater than 2: "); 
+								
+									        								day = read.nextInt(); 
+								
+									 
+								
+									        								continue;  
+								
+									        							} 
+								
+									 
+								
+									        							//  February 
+								
+									        							if (month == 2)  
+								
+									        							{ 
+								
+									        								// Leap year check 
+								
+									        								if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) 
+								
+									        								{ 
+								
+									        									// February up to 29 days 
+								
+									        									if (day > 29)  
+								
+									        									{ 
+								
+									        										System.out.println("Invalid day! February can have at most 29 days in a leap year. \nPlease enter another day:"); 
+								
+									        										day = read.nextInt(); 
+								
+									            
+								
+									        										continue;  
+								
+									        									} 
+								
+									        								} 
+								
+									        	 
+								
+									        								else  
+								
+									        								{ 
+								
+									        									// Non-leap year 
+								
+									        									if (day > 28)  
+								
+									        									{ 
+								
+									        										System.out.println("Invalid day! February can have at most 28 days in a non-leap year. \nPlease enter another day:"); 
+								
+									        										day = read.nextInt(); 
+								
+									 
+								
+									        										continue; 
+								
+									        									} 
+								
+									        								} 
+								
+									        							} 
+								
+									         
+								
+									        							// Check for months with 30 days 
+								
+									        							if ((month == 4 || month == 6 || month == 9 || month == 11) && day > 30)  
+								
+									        							{ 
+								
+									        								System.out.println("Invalid day! The selected month can have at most 30 days. \nPlease enter another day:"); 
+								
+									        								day = read.nextInt(); 
+								
+									  
+								
+									        								continue;  
+								
+									        							}       
+								
+									 
+								
+									        							validDay = 1; // Update variable to exit the loop , valid day 
+								
+									        						} 
+								
+									        					} 
+								
+									        				}//i added this 
+								
+									 
+								
+									        					// make sure that the date is booked or not 
+								
+									if (day < 10) 
+								
+										currentDate= "0" +day + "-" + month + "-" + year; 
+								
+									else 
+								
+										currentDate= day + "-" + month + "-" + year; 
+								
+				                	
+				                	////////////////////////////////////////		
+				                	Status = o.orderStatus(currentDate);
+				              	  if (Status.equals("Delivered"))			                		   
+				
+				              		  System.out.println("Your order was"+ o.orderStatus(currentDate)); 
+				
+				                		 
+				
+				              	  else if (Status.equals("In processes"))	 
+				
+				              		  System.out.println("Your order is"+ o.orderStatus(currentDate)); 
+				
+				              	  else  
+				
+				              		  System.out.println(Status); 
+				
+				                }	 
+				
+				                else  
+				
+				                  System.out.println("Your entered order is not exists, try again"); 
+				
+				                 
+				
+				               break;
+				
+				
+			
+			            case 4: 
+			
+	                    returnMenuList= true; 
+	
+	                    break; 
+
+                   
+ 
+
+	        }// end of customer menu switch
+
+	 }while(returnMenuList == false); // loop customer menu
+	 
+break;/// end of customer case 
+	 
+
+case 3:
+System.out.println("Have a nice day(:");
+break;
+
+default: 
+
+System.out.println("Invalid input"); 
+
+	}// end of main menu switch	
+
+}while(choice != 3);	//main menu 
+	
+} 
+	
+}
+	
+
+	 
+
+	 
+
+
+
