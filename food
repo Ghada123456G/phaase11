@@ -1,0 +1,55 @@
+package phase1;
+
+public class Food extends Product{
+	
+	protected String name;
+	protected double gAmount;
+	protected String expireDate;
+
+	public Food(String name, double g , String expDate , String pName  ) {
+		super(pName );
+		gAmount= g;
+		this.name= name;
+		expireDate= expDate;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public double getgAmount() {
+		return gAmount;
+	}
+
+	public void setgAmount(double gAmount) {
+		this.gAmount = gAmount;
+	}
+
+	public String getExpireDate() {
+		return expireDate;
+	}
+
+	public void setExpireDate(String expireDate) {
+		this.expireDate = expireDate;
+	}
+
+	public double calculatePrice(){
+		double price= 0;
+		if(gAmount > 10)
+			price+= gAmount * 2;
+		else
+			
+			price+= gAmount * 1;
+			
+		
+		return price;
+	}
+	
+	public String toString() { 
+		return super.toString() + ", Food name: " + name + ", Amount in gram: " + gAmount + "g, Expaire date: " + getExpireDate();
+	}
+}
