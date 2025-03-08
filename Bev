@@ -1,0 +1,53 @@
+package phase1;
+
+public class Beverage extends Product{
+	  private String name;
+	  private double mlAmount;
+	  private String expireDate;
+	  
+	public Beverage(String name, double ml, String expireDate, String pName )  {
+	  super(pName );
+	  this.name =name;
+	  this.expireDate  = expireDate ;
+	  mlAmount= ml;
+	}
+	
+	public String toString() {
+		return super.toString() + ", Beverage name: " + name + ", Amount in ml: " + mlAmount + "ml, Expier date: " + expireDate;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public double getMlAmount() {
+		return mlAmount;
+	}
+
+	public void setMlAmount(double mlAmount) {
+		this.mlAmount = mlAmount;
+	}
+
+	public String getExpireDate() {
+		return expireDate;
+	}
+
+	public void setExpireDate(String expireDate) {
+		this.expireDate = expireDate;
+	}
+
+	public double calculatePrice() {
+		double price= 0;
+		if(mlAmount >= 75 && mlAmount < 1000)
+			price+= mlAmount /3.6;
+		else if(mlAmount >= 1000)
+			price+= mlAmount / 19.5;
+		else
+			price+= mlAmount / 2;
+		return price;
+	}
+}
