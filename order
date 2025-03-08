@@ -1,0 +1,168 @@
+package phase1;
+
+public class Order {  
+
+	  private String orderID;
+	  private String customerName;
+	  private String mobile;
+	  private String location;
+	  private int numOfProduct;
+	  private String date;
+	  private double totalCost;
+	  //private Product products;
+	  private Product [] products;
+	  private String status;
+	  //private int time;
+	  
+	  public Order(String CN, String mobile, String loc, int numOfProduct ){ // customer info
+	    customerName= CN;
+	    this.mobile= mobile;
+	    location= loc;
+	    status= "Not placed";
+	    products= new Product[numOfProduct];// ++
+	  }
+
+	  public Order(Order o) {
+	    customerName= o.customerName;
+	    mobile= o.mobile;
+	    location= o.location;
+	    orderID= o.orderID;
+	    date= o.date;
+	    numOfProduct= o.numOfProduct;
+	    totalCost= o.totalCost;
+	    status= o.status;
+	    products= o.products;
+	    
+	  }
+	  
+	  public boolean placeOrder() {
+	    boolean placed =false;
+	    for(int i = 0; i< numOfProduct; i++)
+	    if(products[i].inStock() == true) {
+	      placed = true;
+	    }
+	    else
+	      {placed = false;
+	      return placed;}
+	    
+	    return placed;
+	  }
+	  
+	  
+	  public String orderStatus(String date) {
+	    if(placeOrder() == true &&  this.date.equals(date)== true  ) 
+	      return "In processes";
+	    
+	    else if (placeOrder() == true && this.date.equals(date) == false )
+	      return "Delivered";
+	    else
+	      return "There is no order placed";
+	  }
+	  
+	  /*public boolean placeOrder(Product P, String name , String loc , String date) {
+	    if(P.inStock() == true) {
+	      products= P;
+	      customerName= name;
+	      location= loc;
+	      this.date= date;
+	      return true;
+	    }
+	    else
+	      return false;
+	  }*/
+	  
+	  /*public boolean delivered(Product P, String name , String loc , String date) {
+	    if(placeOrder(P , name , loc , date) == true && orderStatus() == "Delivered")
+	    {
+	      return true;
+	    }
+	    else
+	      return false;
+	  }
+	  public String orderStatus() {
+	    if(placeOrder(this.products ,this.mobile , this.location , this.date) == true &&  delivered(this.products , this.mobile , this.location , this.date) == false) 
+	      return "In processes";
+	    
+	    else if (placeOrder(this.products ,this.mobile , this.location , this.date) == true &&  delivered(this.products ,this.mobile , this.location , this.date) == true)
+	      return "Delivered";
+	    else
+	      return "There is no order placed";
+	  }*/
+	  
+	  public String toString() {
+	    String str= "Order ID: " + orderID + ", Customer name: " + customerName + ", Mobile: " + mobile + ", Location: "
+	        + location + ", numOfProduct=" + numOfProduct + ", date=" + date + ", totalCost=" + totalCost
+	        + ", Product: " + products + "\nProducts: \n";
+	    for(int i= 0 ; i < numOfProduct ; i++) {
+	    	str+= products[i];
+	    }
+	    return str;
+	  }
+
+	  public String getOrderID() {
+	    return orderID;
+	  }
+
+	  public void setOrderID(String orderID) {
+	    this.orderID = orderID;
+	  }
+
+	  public String getCustomerName() {
+	    return customerName;
+	  }
+
+	  public void setCustomerName(String customerName) {
+	    this.customerName = customerName;
+	  }
+
+	  public String getMobile() {
+	    return mobile;
+	  }
+
+	  public void setMobile(String mobile) {
+	    this.mobile = mobile;
+	  }
+
+	  public String getLocation() {
+	    return location;
+	  }
+
+	  public void setLocation(String location) {
+	    this.location = location;
+	  }
+
+	  public int getNumOfProduct() {
+	    return numOfProduct;
+	  }
+
+	  public void setNumOfProduct(int numOfProduct) {
+	    this.numOfProduct = numOfProduct;
+	  }
+
+	  public double getTotalCost() {
+	    return totalCost;
+	  }
+
+	  public void setTotalCost(double totalCost) {
+	    this.totalCost = totalCost;
+	  }
+
+	  public Product [] getProducts() {
+	    return products;
+	  }
+
+	  public void setProduct(Product [] product) {
+	    this.products = product;
+	  }
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+	  
+
+
+}
